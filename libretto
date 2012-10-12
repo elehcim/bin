@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # Wanted usage:
-#	libretto -s=<scala> -p=<formato pagina> input_file.pdf output_file.pdf
+#	libretto [-s=<scala>] -p=<formato pagina> [-o] input_file.pdf output_file.pdf
+# dove:
+# 	-s 	scala la pagina moltiplicando le dimensioni per la quantità "scala"
+#		prendendo come punto fisso il centro della pagina.
+#		Il valore di default è 1.
+#	-p	possibili formati: a4, letter
+#	-o	scala la pagina e basta (non fa il libretto). Serve per fare prove
 #
 # TODO:
 #  - preparare un parametro if a seconda della dimensione del foglio
