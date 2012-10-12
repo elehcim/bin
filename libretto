@@ -13,7 +13,7 @@
 #  - preparare un parametro if a seconda della dimensione del foglio
 #  - accomodare i diversi parametri -s, -p input e output.
 
-pdftops $1 output.ps
+#pdftops $1 output.ps
 scala=1.1
 # dimensioni in cm del foglio A4 210mm×297mm
 A4_width=21
@@ -22,11 +22,14 @@ A4_heigth=29.7
 USletter_width=21.59
 USletter_heigth=27.94
 
-sposta_sx=`echo "(1-$scala)/2*$USletter_width" | bc -l`; echo $sposta_sx
-sposta_giu=`echo "(1-$scala)/2*$USletter_heigth" | bc -l`; echo $sposta_giu
+sposta_sx=`echo "(1-$scala)/2*$USletter_width" | bc -l`; echo sposta_sx= $sposta_sx
+sposta_giu=`echo "(1-$scala)/2*$USletter_heigth*1.5" | bc -l`; echo sposta_giu= $sposta_giu
 
-#riscalatura (in pratica rimuove i margini) e centra la pagina
-pstops -pletter "@$scala(${sposta_sx}cm,${sposta_giu}cm)" output.ps output_riscalato.ps
+# prova per riscalatura differenziata per pagine dx o sx per poi fare il libretto
+sposta_sx_1=`echo "2*$sposta_sx" | bc -l`
+
+# riscalatura (in pratica rimuove i margini) e centra la pagina
+pstops -pletter "2:0@$scala(${sposta_sx}cm,${sposta_giu}cm),1@$scala(${sposta_sx_1}cm,${sposta_giu}cm)" output.ps output_riscalato.ps
 ps2pdf -sPAPERSIZE=letter output_riscalato.ps ${1%.*}_riscalato.pdf
 rm output_riscalato.ps
 
