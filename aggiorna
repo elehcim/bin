@@ -1,0 +1,5 @@
+#!/bin/bash
+# aggiorna zsync quantal iso-image
+cd ~/Scaricati/ISO/quantal/daily-built/
+zsync http://cdimage.ubuntu.com/daily-live/current/quantal-desktop-amd64.iso.zsync
+cd
