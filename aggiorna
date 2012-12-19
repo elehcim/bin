@@ -1,5 +1,10 @@
 #!/bin/bash
 # aggiorna zsync quantal iso-image
-cd ~/Scaricati/ISO/quantal/daily-built/
-zsync http://cdimage.ubuntu.com/daily-live/current/quantal-desktop-amd64.iso.zsync
+# cd ~/Scaricati/ISO/quantal/daily-built/
+# zsync http://cdimage.ubuntu.com/daily-live/current/quantal-desktop-amd64.iso.zsync
+# cd
+
+# aggiorna zsync raring iso-image
+cd ~/Scaricati/ISO/raring/
+zsync http://cdimage.ubuntu.com/daily-live/current/raring-desktop-amd64.iso.zsync
 cd
