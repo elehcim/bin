@@ -1,4 +1,4 @@
- #!/bin/sh
+#!/bin/sh
 sec=$(zenity --entry --title="Google Speech Recognition for Linux" --text="Quanti secondi vuoi parlare? Prego inserire un numero ." --entry-text "10")
 if [[ $sec -gt 0 ]]
 then
