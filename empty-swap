@@ -1,1 +1,3 @@
+echo "emptying swap"
 sudo swapoff -a && sudo swapon -a
+echo "swap reactivated"
