@@ -1,0 +1,5 @@
+#!/bin/bash
+JULIA_DIR=/opt/julia
+cd $JULIA_DIR
+git pull
+make -j3
