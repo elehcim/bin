@@ -1,0 +1,32 @@
+#!/bin/bash
+# Copyright fabrizio.zellini.org
+usage () {
+echo "Usage rai 1|2|3|4|news24|sport|storia|edu|sat-extra|sat-premium|sat-cinema|sat-yoyo|gulp|euronews"
+exit 1
+}
+if [ ! $# = 1 ] ; then
+    usage
+fi
+
+case $1 in
+    "1" ) cont=983;;
+    "2" ) cont=984;;
+    "3" ) cont=986;;
+    "4" ) cont=75708;;
+    "news24" ) cont=1;;
+    "sport" ) cont=4145;;
+    "storia" ) cont=24269;;
+    "edu" ) cont=24268;;
+    "sat-extra" ) cont=72382;;
+    "sat-premium" ) cont=72383;;
+    "sat-cinema" ) cont=72381;;
+    "sat-yoyo" ) cont=72384;;
+    "gulp" ) cont=4119;;
+    "euronews" ) cont=113784;;
+    * ) usage;;
+esac
+
+url="http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=$cont"
+
+mms=`curl -H "viaurl: www.rai.tv" -s "$url" | sed 's/&/&amp;/' | xmlstarlet sel -T -t -m "//REF/@HREF" -v "." -n -`
+mplayer "$mms"
