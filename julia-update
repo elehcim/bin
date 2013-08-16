@@ -2,6 +2,6 @@
 JULIA_DIR=/opt/julia
 cd $JULIA_DIR
 git pull
-make -j3
+make -j3 # Leave 1 proc to me
 echo "Updating julia packages"
 julia -e "Pkg.update()"
