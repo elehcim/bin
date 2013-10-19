@@ -2,15 +2,15 @@
 JULIA_DIR=/opt/julia
 
 help(){
-echo "usage: julia-update pkg|clean"
+echo "usage: julia-update pkg|all|clean"
 exit 1
 }
 
-clean(){
+clean_update(){
 echo "Cleaning julia compiled file."
-echo "Run julia-update again to rebuild"
 cd $JULIA_DIR
 make clean
+update_julia
 exit 0
 }
 
@@ -28,8 +28,14 @@ make -j3 # Leave 1 proc to me
 exit 0
 }
 
+all(){
+clean_update
+update_julia
+update_packages
+}
 case $1 in
   ""      ) update_julia;;
+  "all"   ) all;;
   "pkg"   ) update_packages;;
   "clean" ) clean;;
   * ) help;;
