@@ -37,6 +37,6 @@ case $1 in
   ""      ) update_julia;;
   "all"   ) all;;
   "pkg"   ) update_packages;;
-  "clean" ) clean;;
+  "clean" ) clean_update;;
   * ) help;;
 esac
