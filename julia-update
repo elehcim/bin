@@ -14,6 +14,14 @@ update_julia
 exit 0
 }
 
+cleanall_update(){
+echo "Cleaning julia and dependencies compiled file."
+cd $JULIA_DIR
+make cleanall
+update_julia
+exit 0
+}
+
 update_packages(){
 echo "Updating julia packages"
 julia -e "Pkg.update()"
@@ -38,5 +46,6 @@ case $1 in
   "all"   ) all;;
   "pkg"   ) update_packages;;
   "clean" ) clean_update;;
+  "cleanall" ) cleanall_update;;
   * ) help;;
 esac
