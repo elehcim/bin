@@ -1,0 +1,4 @@
+#!/bin/bash
+cat "$1" |\
+wc -cmwl |\
+sed 's/\s*\([0-9]*\)\s*\([0-9]*\)\s*\([0-9]*\)\s*\([0-9]*\)/Bytes: \4\nCharacters: \3\nWords: \2\nLines: \1/'
