@@ -1,4 +1,7 @@
 #!/bin/bash
+# Michele Mastropietro
+# Thanks to Unix.stackexchange user Graeme
+# http://unix.stackexchange.com/a/210992/29264
 
 usage(){
     echo "usage:" 
@@ -7,19 +10,18 @@ usage(){
     exit 1
 }
 
-test(){
+run_test(){
 #   tre curl http://ipecho.net/plain; echo  
     #PINGDEF=`tre curl http://ipecho.net/plain; echo`
-    PINGDEF=`sudo ip netns exec tre curl -s http://ipecho.net/plain`
+    PINGDEF=`sudo ip netns exec tre_ns curl -s http://ipecho.net/plain`
     PINGIFACE=`curl -s http://ipecho.net/plain`
     echo "default interface ip: $PINGDEF"
-    echo "tre     interface ip: $PINGIFACE"
+    echo "tre_ns  interface ip: $PINGIFACE"
     exit 0
-
 }
 
 if [ "$1" = "test" ]; then
-    test
+    run_test
 fi
 
 if [ $# -lt 2 ]; then
@@ -35,45 +37,40 @@ IFACE=$1
 #show-iface() {`ip ro` }
 
 up(){
-    echo "--- Creating a network namespace called tre"
+    echo "--- Creating a network namespace called tre_ns"
     #ip ro
 
-    # Add a new namespace called tre
-    sudo ip netns add tre
+    # Add a new namespace called tre_ns
+    sudo ip netns add tre_ns
 
     # Set test to use IFACE, after this point IFACE is not usable by 
     # programs outside the namespace
-    sudo ip link set $IFACE netns tre
+    sudo ip link set $IFACE netns tre_ns
 
-    # Bring up IFACE inside tre
-    sudo ip netns exec tre ip link set $IFACE up
+    # Bring up IFACE inside tre_ns
+    sudo ip netns exec tre_ns ip link set $IFACE up
 
-    # Use dhcp to get an ipv4 address for tre
-    sudo ip netns exec tre dhclient $IFACE
+    # Use dhcp to get an ipv4 address for tre_ns
+    sudo ip netns exec tre_ns dhclient $IFACE
 
-    # Test
-    #sudo ip netns exec tre ping www.google.it
-    alias tre="sudo ip netns exec tre"
+    #alias tre_ns="sudo ip netns exec tre_ns"
 
     echo "--- You can use the new namespace:"
-    echo "    $ sudo ip netns exec tre <command>"
+    echo "    $ sudo ip netns exec tre_ns <command>"
     
     exit 0
 }
 
 down(){
-    echo "--- Deleting network namespace tre"
+    echo "--- Deleting network namespace tre_ns"
     echo "--- To be implemented"
-    unalias tre
     exit 0
 }
-
-
 
 case $2 in
   "up"   ) up;;
   "down" ) down;;
-  "test" ) test;;
+  "test" ) run_test;;
   "show-iface" ) `ip ro`;; 
   * ) usage;;
 esac
