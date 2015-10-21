@@ -1,0 +1,55 @@
+#!/bin/bash
+
+usage(){
+echo "usage: tre <interface> [up|down|test|show-iface]"
+exit 1
+}
+
+if [ $# -lt 2 ]; then
+	#echo "Number of arguments: $#"
+	echo "Incorrect number of arguments"
+	usage
+fi
+
+sudo echo -n
+
+IFACE=$1
+
+#show-iface() {`ip ro` }
+  
+up(){
+	echo "--- Creating a network namespace called tre"
+	#ip ro
+
+	# Add a new namespace called tre
+	sudo ip netns add tre
+
+	# Set test to use IFACE, after this point IFACE is not usable by 
+	# programs outside the namespace
+	sudo ip link set $IFACE netns tre
+
+	# Bring up IFACE inside tre
+	sudo ip netns exec tre ip link set $IFACE up
+
+	# Use dhcp to get an ipv4 address for tre
+	sudo ip netns exec tre dhclient $IFACE
+
+	# Test
+	#sudo ip netns exec tre ping www.google.it
+	
+	exit 0
+}
+
+down(){
+	echo "--- Deleting network namespace tre"
+	echo "--- To be implemented"
+	exit 0
+}
+
+case $2 in
+  "up"   ) up;;
+  "down" ) down;;
+  "test" ) test;;
+  "show-iface" ) `ip ro`;; 
+  * ) usage;;
+esac
