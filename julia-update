@@ -22,6 +22,14 @@ update_julia
 exit 0
 }
 
+debug_update(){
+echo "Updating julia, compiling debug binary"
+cd $JULIA_DIR
+git pull
+make julia-debug -j$((`nproc` -1)) # Leave 1 proc to me
+exit 0
+}
+
 update_packages(){
 echo "Updating julia packages"
 julia -e "Pkg.update()"
@@ -32,7 +40,7 @@ update_julia(){
 echo "Updating julia"
 cd $JULIA_DIR
 git pull
-make -j3 # Leave 1 proc to me
+make -j$((`nproc` -1)) # Leave 1 proc to me
 exit 0
 }
 
@@ -46,6 +54,7 @@ case $1 in
   "all"   ) all;;
   "pkg"   ) update_packages;;
   "clean" ) clean_update;;
+  "debug" ) debug_update;;
   "cleanall" ) cleanall_update;;
   * ) help;;
 esac
