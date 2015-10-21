@@ -1,14 +1,31 @@
 #!/bin/bash
 
 usage(){
-echo "usage: tre-net <interface> [up|down|test|show-iface]"
-exit 1
+    echo "usage:" 
+    echo "       tre-net <interface> [up|down|show-iface]"
+    echo "       tre-net test"
+    exit 1
 }
 
+test(){
+#   tre curl http://ipecho.net/plain; echo  
+    #PINGDEF=`tre curl http://ipecho.net/plain; echo`
+    PINGDEF=`sudo ip netns exec tre curl -s http://ipecho.net/plain`
+    PINGIFACE=`curl -s http://ipecho.net/plain`
+    echo "default interface ip: $PINGDEF"
+    echo "tre     interface ip: $PINGIFACE"
+    exit 0
+
+}
+
+if [ "$1" = "test" ]; then
+    test
+fi
+
 if [ $# -lt 2 ]; then
-	#echo "Number of arguments: $#"
-	echo "Incorrect number of arguments"
-	usage
+    #echo "Number of arguments: $#"
+    echo "Incorrect number of arguments"
+    usage
 fi
 
 sudo echo -n
@@ -16,37 +33,42 @@ sudo echo -n
 IFACE=$1
 
 #show-iface() {`ip ro` }
-  
+
 up(){
-	echo "--- Creating a network namespace called tre"
-	#ip ro
+    echo "--- Creating a network namespace called tre"
+    #ip ro
 
-	# Add a new namespace called tre
-	sudo ip netns add tre
+    # Add a new namespace called tre
+    sudo ip netns add tre
 
-	# Set test to use IFACE, after this point IFACE is not usable by 
-	# programs outside the namespace
-	sudo ip link set $IFACE netns tre
+    # Set test to use IFACE, after this point IFACE is not usable by 
+    # programs outside the namespace
+    sudo ip link set $IFACE netns tre
 
-	# Bring up IFACE inside tre
-	sudo ip netns exec tre ip link set $IFACE up
+    # Bring up IFACE inside tre
+    sudo ip netns exec tre ip link set $IFACE up
 
-	# Use dhcp to get an ipv4 address for tre
-	sudo ip netns exec tre dhclient $IFACE
+    # Use dhcp to get an ipv4 address for tre
+    sudo ip netns exec tre dhclient $IFACE
 
-	# Test
-	#sudo ip netns exec tre ping www.google.it
-	echo "--- You can use the new namespace"
-	echo "    $ sudo ip netns exec tre <command>"
-	alias tre="sudo ip netns exec tre"
-	exit 0
+    # Test
+    #sudo ip netns exec tre ping www.google.it
+    alias tre="sudo ip netns exec tre"
+
+    echo "--- You can use the new namespace:"
+    echo "    $ sudo ip netns exec tre <command>"
+    
+    exit 0
 }
 
 down(){
-	echo "--- Deleting network namespace tre"
-	echo "--- To be implemented"
-	exit 0
+    echo "--- Deleting network namespace tre"
+    echo "--- To be implemented"
+    unalias tre
+    exit 0
 }
+
+
 
 case $2 in
   "up"   ) up;;
