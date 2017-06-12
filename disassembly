@@ -1,6 +1,7 @@
 #!/bin/bash
+COMPILER="gcc"
 SRC=$1
 OBJ=${SRC%.cpp}.o
 ASM=${SRC%.cpp}.asm
-gcc -g -c $SRC -mfma -fverbose-asm &&\
+$COMPILER -g -c $SRC -mfma -fverbose-asm &&\
 objdump -d -M intel -S $OBJ > $ASM && rm $OBJ
