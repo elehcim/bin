@@ -1,3 +1,3 @@
 #!/bin/bash
 
-meld <(nbflatten.jq $1) <(nbflatten.jq $2)
+/home/michele/Software/miniconda3/bin/nbdiff $1 $2

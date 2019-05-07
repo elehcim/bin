@@ -1,0 +1,4 @@
+#!/bin/bash
+CACHE_PATH=/home/michele/.var/app/com.spotify.Client/cache/spotify/Data
+echo "removing cache in $CACHE_PATH"
+rm -r $CACHE_PATH/*

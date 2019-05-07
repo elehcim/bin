@@ -1,0 +1,5 @@
+#!/bin/bash
+
+SCRIPT=~/Software/spatial-media/spatialmedia/__main__.py
+
+python $SCRIPT -i $1 $2
