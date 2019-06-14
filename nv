@@ -1,0 +1,44 @@
+#!/bin/bash
+
+on(){
+	sudo tee /proc/acpi/bbswitch <<< ON && cat /proc/acpi/bbswitch
+}
+
+off(){
+    sudo rmmod nvidia_drm && sudo rmmod nvidia_modeset && sudo rmmod nvidia && sudo echo "OFF" > /proc/acpi/bbswitch && cat /proc/acpi/bbswitch
+}
+
+usage(){
+    echo "usage:"
+    echo "       nv on|off|bs"
+    exit 1
+}
+
+
+status(){
+	cat /proc/acpi/bbswitch
+}
+
+bumblebeed_status(){
+	service bumblebeed status
+}
+
+# if [ ${#} -lt 1 ]; then
+#     cat /proc/acpi/bbswitch
+# else
+
+# if [ "$1" = "on" ]; then
+#     on
+# fi
+
+case $1 in
+  "") status;;
+  # "--help") usage;;
+  "on"    ) on;;
+  "off"   ) off;;
+  "bs"    ) bumblebeed_status;;
+  "bumblebee"  ) bumblebeed_status;;
+  # * );;
+esac
+
+# fi
