@@ -18,10 +18,10 @@ PROXY_DIR=$HOME/.socks5-chrome-proxy-profile
 # `echo $!` returns the pid of the SSH tunnel
 # because it is on in background and will have to kill it manually
 
-ssh -D $PORT -f -C -q -N odroid & echo $!
+ssh -D $PORT -f -C -q -N odroid &
+echo $!
 
-
-# Launch chrome with a new profile which will be created it doesn't exist
+# Launch chrome with a new profile which will be created if it doesn't exist
 /usr/bin/google-chrome \
     --user-data-dir="$PROXY_DIR" \
     --proxy-server="socks5://localhost:$PORT"
