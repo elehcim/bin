@@ -1,0 +1,27 @@
+#!/bin/bash
+# Adapted from here: https://linuxize.com/post/how-to-setup-ssh-socks-tunnel-for-private-browsing/
+# Other links:
+# Also this is clear: https://ma.ttias.be/socks-proxy-linux-ssh-bypass-content-filters/
+# Another similar: https://www.digitalocean.com/community/tutorials/how-to-route-web-traffic-securely-without-a-vpn-using-a-socks-tunnel
+
+
+
+PORT=8123
+PROXY_DIR=$HOME/.socks5-chrome-proxy-profile
+
+# SSH flags:
+# -D: Tells SSH that we want a SOCKS tunnel on the specified port number (you can choose a number between 1025-65536)
+# -f: Forks the process to the background
+# -C: Compresses the data before sending it
+# -q: Uses quiet mode
+
+# `echo $!` returns the pid of the SSH tunnel
+# because it is on in background and will have to kill it manually
+
+ssh -D $PORT -f -C -q -N odroid & echo $!
+
+
+# Launch chrome with a new profile which will be created it doesn't exist
+/usr/bin/google-chrome \
+    --user-data-dir="$PROXY_DIR" \
+    --proxy-server="socks5://localhost:$PORT"
