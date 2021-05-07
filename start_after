@@ -1,0 +1,5 @@
+#!/bin/bash
+pid=$1
+while [ -d /proc/$pid ] ; do
+    sleep 1
+done
