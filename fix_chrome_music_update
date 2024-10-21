@@ -1,3 +1,0 @@
-#!/bin/bash
-sudo ln -s /dev/nvme0n1p2 /dev/sda1
-sudo ln -s /dev/sda1 /dev/disk/by-uuid/chrome_doesnt_know_about_nvme
