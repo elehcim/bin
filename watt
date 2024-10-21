@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# awk '{print $1*1e-6 " W"}' /sys/class/power_supply/BAT0/power_now
+
+cat /sys/class/power_supply/BAT0/current_now /sys/class/power_supply/BAT0/voltage_now | xargs | awk '{print $1*$2/1e12 " W"}'
+
+
+time=1
+declare T0=($(sudo cat /sys/class/powercap/*/energy_uj)); sleep $time; declare T1=($(sudo cat /sys/class/powercap/*/energy_uj))
+for i in "${!T0[@]}"; do echo - | awk "{printf \"%.1f W\n\", $((${T1[i]}-${T0[i]})) / $time / 1e6 }" ; done
