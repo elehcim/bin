@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -eu
+export LC_NUMERIC="en_US.UTF-8"
 
 get_power()
 {
@@ -46,7 +47,7 @@ case $status in
     Discharging)
         power_now=$(get_power)
         minutes_left=$(echo "scale=1; $(get_energy) / $power_now * 60" | bc)
-        printf '%d%%\t%0.fminutes\t%.2fW\n' "${capacity}" "${minutes_left}" "${power_now}"
+        printf '%d%%\t%0.f minutes\t%.2fW\n' "${capacity}" "${minutes_left}" "${power_now}"
         ;;
     Charging)
         printf '%d%%\tCharging\n' "${capacity}"
